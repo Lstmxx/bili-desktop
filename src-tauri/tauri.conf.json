@@ -11,10 +11,21 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
         "all": false,
         "open": true
+      },
+      "window": {
+        "all": true
+      },
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": [
+          "http://**",
+          "https://**"
+        ]
       }
     },
     "bundle": {
@@ -34,11 +45,13 @@
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
         "resizable": true,
-        "title": "bili-desktop",
-        "width": 800,
-        "height": 600
+        "decorations": true,
+        "width": 1200,
+        "height": 800,
+        "transparent": true
       }
     ]
   }
