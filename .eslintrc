@@ -16,6 +16,16 @@
 		"semi": "off",
 		"@typescript-eslint/semi": ["error", "always"],
 		"no-tabs": "off",
-		"no-mixed-spaces-and-tabs": "off"
+		"no-mixed-spaces-and-tabs": "off",
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-misused-promises": "off",
+		"@typescript-eslint/naming-convention": [
+			"error",
+			{
+				"selector": "variable",
+				"format": ["camelCase", "UPPER_CASE", "snake_case", "PascalCase"]
+			}
+		]
 	}
 }

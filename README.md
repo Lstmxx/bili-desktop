@@ -1,3 +1,5 @@
-# Tauri + React + Typescript + TailwindCSS + Zustand
+# bili-desktop
 
-This template should help get you started developing with Tauri, React, TailwindCSS, Zustand and Typescript in Vite.
+学习 tauri 的练手项目
+
+Tauri + React + Typescript + TailwindCSS + Zustand
