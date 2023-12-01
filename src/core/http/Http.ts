@@ -51,7 +51,7 @@ export default class Http {
     const defaultResolve = (val: T) => val;
     interceptors.forEach((interceptor) => {
       const { rejected, fulfilled } = interceptor;
-      promise = promise.then((fulfilled as any) ?? defaultResolve, rejected);
+      promise = promise.then((fulfilled?.bind(interceptor) as any) ?? defaultResolve, rejected?.bind(interceptor));
     });
     return await promise;
   }
