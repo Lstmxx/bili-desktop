@@ -39,7 +39,7 @@ export default function QrCodeLogin () {
 				break;
 			case QR_CODE_POLL_STATE_ENUM.SUCCESS:
 				reload.current = false;
-				setByQrCodeLoginRes(data.url, data.refresh_token);
+				await setByQrCodeLoginRes(data.url, data.refresh_token);
 				handleGetSelfInfo();
 				enqueueSnackbar('登录成功', { variant: 'success' });
 				break;

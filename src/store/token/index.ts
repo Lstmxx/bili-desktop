@@ -17,7 +17,7 @@ interface TokenStore {
 	credential: Credential;
 	clearCredential: () => void;
 	getCookies: () => string;
-	setByQrCodeLoginRes: (url: string, refreshToken: string) => void;
+	setByQrCodeLoginRes: (url: string, refreshToken: string) => Promise<void>;
 }
 
 export const useTokenStore = create<TokenStore>()(
