@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 import { useTokenStore } from '@/store/token';
 
+import { useSnackbar } from 'notistack';
+import { handleGetSelfInfo } from '@/lib/user';
+
 export default function QrCodeLogin () {
 	const { setByQrCodeLoginRes } = useTokenStore();
+	const { enqueueSnackbar } = useSnackbar();
 
 	const reload = useRef(true);
 	const [qrCode, setQrCode] = useState('');
@@ -36,6 +40,8 @@ export default function QrCodeLogin () {
 			case QR_CODE_POLL_STATE_ENUM.SUCCESS:
 				reload.current = false;
 				setByQrCodeLoginRes(data.url, data.refresh_token);
+				handleGetSelfInfo();
+				enqueueSnackbar('登录成功', { variant: 'success' });
 				break;
 		}
 

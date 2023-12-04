@@ -8,7 +8,8 @@ import type * as Types from './type';
 export const getSelfInfo = async () => {
 	return await http.get<Types.IUserInfo>({
 		server: DOMAIN_ENUM.BILI_API,
-		url: '/x/space/myinfo'
+		url: '/x/space/myinfo',
+		loading: true
 	});
 };
 

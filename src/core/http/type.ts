@@ -4,6 +4,7 @@ import type { FetchOptions, Response } from '@tauri-apps/api/http';
 export type IRequestConfig = Omit<FetchOptions, 'method'> & {
 	url: string;
 	method?: FetchOptions['method'];
+	loading?: boolean;
 	data?: any;
 	params?: any;
 	/**

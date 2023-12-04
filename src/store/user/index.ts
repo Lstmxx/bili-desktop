@@ -4,7 +4,7 @@ import { devtools, persist } from 'zustand/middleware';
 
 interface UserStore {
 	userInfo: IUserInfo | null;
-	setUserInfo: (userInfo: IUserInfo) => void;
+	setUserInfo: (userInfo: IUserInfo | null) => void;
 }
 
 export const useUserStore = create<UserStore>()(

@@ -1,3 +1,4 @@
+import { useLoadingStore } from '@/store/loading';
 import type { IHttpConfig, IRequestConfig, IResponse, IRequestInterceptor, IResponseInterceptor } from './type';
 
 import { fetch, ResponseType, type Response } from '@tauri-apps/api/http';
@@ -68,11 +69,20 @@ export default class Http {
 
 		mergeConfig = Object.assign(mergeConfig, await this.runInterceptors<IRequestConfig>(this.requestInterceptors, mergeConfig));
 
+		if (mergeConfig.loading) {
+			useLoadingStore.getState().setLoading(true);
+		}
 		// if (method === 'GET' || method === 'DELETE') {
 		// }
-		let res = await fetch<IResponse<T>>(mergeConfig.url, { method, headers: mergeConfig.headers, responseType: mergeConfig.responseType });
-
-		res = await this.runInterceptors<Response<IResponse<T>>>(this.responseInterceptors, res);
+		let res: Response<IResponse<T>>;
+		try {
+			res = await fetch<IResponse<T>>(mergeConfig.url, { method, headers: mergeConfig.headers, responseType: mergeConfig.responseType });
+			res = await this.runInterceptors<Response<IResponse<T>>>(this.responseInterceptors, res);
+		} finally {
+			if (mergeConfig.loading) {
+				useLoadingStore.getState().setLoading(false);
+			}
+		}
 
 		return res;
 	}

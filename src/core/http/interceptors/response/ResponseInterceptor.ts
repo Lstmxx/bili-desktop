@@ -1,5 +1,6 @@
 import type { Response } from '@tauri-apps/api/http';
 import { type IResponse } from '../../type';
+import { enqueueSnackbar } from 'notistack';
 
 export class ResponseInterceptor {
 	async fulfilled (response: Response<any>) {
@@ -15,6 +16,7 @@ export class ResponseInterceptor {
 	}
 
 	async rejected (error: Error) {
+		enqueueSnackbar(error.message ?? '网络错误', { variant: 'error' });
 		console.error(error);
 		return await Promise.reject(error);
 	}

@@ -15,7 +15,7 @@ interface Credential {
 
 interface TokenStore {
 	credential: Credential;
-
+	clearCredential: () => void;
 	getCookies: () => string;
 	setByQrCodeLoginRes: (url: string, refreshToken: string) => void;
 }
@@ -51,6 +51,17 @@ export const useTokenStore = create<TokenStore>()(
 							buvid3
 						}
 					}));
+				},
+				clearCredential: () => {
+					set({
+						credential: {
+							SESSDATA: '',
+							bili_jct: '',
+							buvid3: '',
+							DedeUserID: '',
+							ac_time_value: ''
+						}
+					});
 				},
 				getCookies: () => {
 					const credential = get().credential;
