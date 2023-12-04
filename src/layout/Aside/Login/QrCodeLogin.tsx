@@ -2,64 +2,69 @@ import { QR_CODE_POLL_STATE_ENUM } from '@/constant/login';
 import { getQrCode, handleQrCodePoll } from '@/lib/login/qr-code';
 import { useEffect, useRef, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
+import { useTokenStore } from '@/store/token';
 
 export default function QrCodeLogin () {
-  const reload = useRef(true);
-  const [qrCode, setQrCode] = useState('');
-  const qrCodeKey = useRef('');
-  const [showWaitConfirm, setShowWaitConfirm] = useState(false);
+	const { setByQrCodeLoginRes } = useTokenStore();
 
-  const timeoutId = useRef<any>();
+	const reload = useRef(true);
+	const [qrCode, setQrCode] = useState('');
+	const qrCodeKey = useRef('');
+	const [showWaitConfirm, setShowWaitConfirm] = useState(false);
 
-  const cleanTimeout = () => {
-    console.log('clean');
-    reload.current = false;
-    timeoutId.current && clearTimeout(timeoutId.current);
-  };
+	const timeoutId = useRef<any>();
 
-  const handlePoll = async () => {
-    const data = await handleQrCodePoll(qrCodeKey.current);
-    console.log(data);
-    setShowWaitConfirm(false);
-    switch (data.code) {
-      case QR_CODE_POLL_STATE_ENUM.WAIT_FOR_SCANNING:
-        break;
-      case QR_CODE_POLL_STATE_ENUM.WAIT_FOR_CONFIRM:
-        !showWaitConfirm && setShowWaitConfirm(true);
-        break;
-      case QR_CODE_POLL_STATE_ENUM.INVALID:
-        await handleGetQrCode();
-        break;
-      case QR_CODE_POLL_STATE_ENUM.SUCCESS:
-        reload.current = false;
-    }
+	const cleanTimeout = () => {
+		console.log('clean');
+		reload.current = false;
+		timeoutId.current && clearTimeout(timeoutId.current);
+	};
 
-    if (reload.current) {
-      timeoutId.current = setTimeout(() => {
-        handlePoll();
-      }, 500);
-    }
-  };
+	const handlePoll = async () => {
+		const data = await handleQrCodePoll(qrCodeKey.current);
+		console.log(data);
+		setShowWaitConfirm(false);
+		switch (data.code) {
+			case QR_CODE_POLL_STATE_ENUM.WAIT_FOR_SCANNING:
+				break;
+			case QR_CODE_POLL_STATE_ENUM.WAIT_FOR_CONFIRM:
+				!showWaitConfirm && setShowWaitConfirm(true);
+				break;
+			case QR_CODE_POLL_STATE_ENUM.INVALID:
+				await handleGetQrCode();
+				break;
+			case QR_CODE_POLL_STATE_ENUM.SUCCESS:
+				reload.current = false;
+				setByQrCodeLoginRes(data.url, data.refresh_token);
+				break;
+		}
 
-  const handleGetQrCode = async () => {
-    const data = await getQrCode();
-    setQrCode(data.qrCodeUrl);
-    qrCodeKey.current = data.qrCodeKey;
-  };
+		if (reload.current) {
+			timeoutId.current = setTimeout(() => {
+				handlePoll();
+			}, 500);
+		}
+	};
 
-  const init = async () => {
-    reload.current = true;
-    await handleGetQrCode();
-    await handlePoll();
-  };
-  useEffect(() => {
-    init();
-    return () => {
-      cleanTimeout();
-    };
-  }, []);
+	const handleGetQrCode = async () => {
+		const data = await getQrCode();
+		setQrCode(data.qrCodeUrl);
+		qrCodeKey.current = data.qrCodeKey;
+	};
 
-  return (
+	const init = async () => {
+		reload.current = true;
+		await handleGetQrCode();
+		await handlePoll();
+	};
+	useEffect(() => {
+		init();
+		return () => {
+			cleanTimeout();
+		};
+	}, []);
+
+	return (
 		<div className='flex flex-col items-center'>
 			<h3>扫描二维码登录</h3>
 			<div className='flex relative p-2 rounded-sm border border-blue border-solid'>
@@ -81,5 +86,5 @@ export default function QrCodeLogin () {
 				<span>扫码登录或扫码下载APP</span>
 			</div>
 		</div>
-  );
+	);
 }

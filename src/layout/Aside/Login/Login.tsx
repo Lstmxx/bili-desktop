@@ -8,17 +8,17 @@ import PasswordLogin from './PasswordLogin';
 import SmsLogin from './SmsLogin';
 
 export default function Login () {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+	const [open, setOpen] = useState(false);
+	const handleOpen = () => {
+		setOpen(true);
+	};
+	const handleClose = () => {
+		setOpen(false);
+	};
 
-  const [tab, setTab] = useState(TAB_TYPE_ENUM.PASSWORD);
+	const [tab, setTab] = useState(TAB_TYPE_ENUM.PASSWORD);
 
-  return (
+	return (
 		<>
 			<div className='w-10 h-10 bg-blue rounded-full text-center leading-10 text-white cursor-pointer select-none' onClick={handleOpen}>
 				登录
@@ -54,5 +54,5 @@ export default function Login () {
 				</DialogContent>
 			</Dialog>
 		</>
-  );
+	);
 }

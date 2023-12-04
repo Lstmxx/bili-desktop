@@ -26,6 +26,20 @@
 				"selector": "variable",
 				"format": ["camelCase", "UPPER_CASE", "snake_case", "PascalCase"]
 			}
+		],
+		"@typescript-eslint/indent": "off",
+		"@typescript-eslint/member-delimiter-style": [
+			"error",
+			{
+				"multiline": {
+					"delimiter": "semi", // 'none' or 'semi' or 'comma'
+					"requireLast": true
+				},
+				"singleline": {
+					"delimiter": "semi", // 'semi' or 'comma'
+					"requireLast": true
+				}
+			}
 		]
 	}
 }

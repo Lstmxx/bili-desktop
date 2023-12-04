@@ -4,34 +4,34 @@ import { useForm, type SubmitHandler, type UseFormRegisterReturn } from 'react-h
 import { useState } from 'react';
 
 interface ISubmitData {
-  username: ''
-  password: ''
+	username: '';
+	password: '';
 }
 
-const Input = (props: InputBaseProps & { label: string, register: UseFormRegisterReturn<any> }) => {
-  const [type, setType] = useState(props.type);
-  const handleSetType = () => {
-    setType(type === 'password' ? 'text' : 'password');
-  };
-  return (
+const Input = (props: InputBaseProps & { label: string; register: UseFormRegisterReturn<any>; }) => {
+	const [type, setType] = useState(props.type);
+	const handleSetType = () => {
+		setType(type === 'password' ? 'text' : 'password');
+	};
+	return (
 		<div className='flex py-3 px-5 items-center'>
 			<span className='mr-4 whitespace-nowrap'>{props.label}</span>
 			<InputBase className='shadow-none' {...props} type={type} {...props.register} />
 			{props.type === 'password' && <IconButton onClick={handleSetType}>{type === 'password' ? <VisibilityOff /> : <Visibility />}</IconButton>}
 		</div>
-  );
+	);
 };
 
 export default function PasswordLogin () {
-  const {
-    register,
-    handleSubmit,
-    formState: { isDirty, isValid }
-  } = useForm<ISubmitData>();
-  const onSubmit: SubmitHandler<ISubmitData> = (data) => {
-    console.log(data);
-  };
-  return (
+	const {
+		register,
+		handleSubmit,
+		formState: { isDirty, isValid }
+	} = useForm<ISubmitData>();
+	const onSubmit: SubmitHandler<ISubmitData> = (data) => {
+		console.log(data);
+	};
+	return (
 		<form className='flex flex-col'>
 			<div className='flex flex-col border border-border border-solid rounded-md divide-border divide-solid divide-y divide-x-0'>
 				<Input label='账号' placeholder='请输入账号' fullWidth register={register('username', { required: true })} />
@@ -44,5 +44,5 @@ export default function PasswordLogin () {
 				</Button>
 			</div>
 		</form>
-  );
+	);
 }
