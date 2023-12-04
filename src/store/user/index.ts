@@ -1,16 +1,17 @@
+import { type IUserInfo } from '@/api/user/type';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface UserStore {
-	userInfo: any;
-	setUserInfo: (userInfo: any) => void;
+	userInfo: IUserInfo | null;
+	setUserInfo: (userInfo: IUserInfo) => void;
 }
 
 export const useUserStore = create<UserStore>()(
 	devtools(
 		persist(
 			(set) => ({
-				userInfo: 0,
+				userInfo: null,
 				setUserInfo: (userInfo) => {
 					set((state) => ({ ...state, userInfo }));
 				}
