@@ -11,7 +11,7 @@ const rootEl = document.getElementById('root') as HTMLElement;
 ReactDOM.createRoot(rootEl).render(
 	<React.StrictMode>
 		<ThemeProvider rootElement={rootEl}>
-			<SnackbarProvider maxSnack={3} anchorOrigin={{ horizontal: 'center', vertical: 'top' }}>
+			<SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'top' }}>
 				<Loading />
 				<App />
 			</SnackbarProvider>

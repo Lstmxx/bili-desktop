@@ -9,7 +9,7 @@ export class HeaderInterceptor {
 		!headers.Origin && (headers.Origin = 'https://www.bilibili.com');
 		console.log('Cookie before', headers.Cookie);
 		if (!headers.Cookie) {
-			headers.Cookie = useTokenStore.getState().getCookies();
+			headers.Cookie = useTokenStore.getState().getCookie();
 			console.log('Cookie after', headers.Cookie);
 		}
 		console.log(headers);

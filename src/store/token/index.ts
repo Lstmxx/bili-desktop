@@ -16,7 +16,7 @@ interface Credential {
 interface TokenStore {
 	credential: Credential;
 	clearCredential: () => void;
-	getCookies: () => string;
+	getCookie: () => string;
 	setByQrCodeLoginRes: (url: string, refreshToken: string) => Promise<void>;
 }
 
@@ -63,13 +63,16 @@ export const useTokenStore = create<TokenStore>()(
 						}
 					});
 				},
-				getCookies: () => {
+				getCookie: () => {
 					const credential = get().credential;
-					let cookies = '';
+					let cookie = '';
 					Object.keys(credential).forEach((key) => {
-						cookies += `${key}=${(credential as any)[key]};`;
+						const value = (credential as any)[key];
+						if (value) {
+							cookie += `${key}=${value};`;
+						}
 					});
-					return cookies;
+					return cookie;
 				}
 			}),
 			{
