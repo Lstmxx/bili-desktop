@@ -9,18 +9,21 @@ const VideoItem = ({ video }: { video: Video; }) => {
 			<div className='relative w-full pb-[75%]'>
 				<img className='w-full h-full absolute left-0 top-0' src={video.pic} alt='' referrerPolicy='no-referrer' crossOrigin='anonymous' />
 			</div>
+			<div className='flex p-2'>
+				<span className=' font-bold line-clamp-2 flex-1'>{video.title}</span>
+			</div>
 		</div>
 	);
 };
 
 export default function Recommend () {
 	const { userInfo } = useUserStore();
-	const { videos, handleGetRecommendVideos } = useVideoList({ pageSize: 10 });
+	const { videos, handleGetRecommendVideos } = useVideoList({ pageSize: 20 });
 	useEffect(() => {
 		handleGetRecommendVideos();
 	}, [userInfo]);
 	return (
-		<div className='grid grid-cols-4 gap-4 p-4'>
+		<div className='grid grid-cols-4 gap-6 p-6'>
 			{videos.map((video) => (
 				<VideoItem key={video.id} video={video} />
 			))}
