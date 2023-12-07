@@ -8,7 +8,7 @@ export default function Layout () {
 			<Aside />
 			<div className='flex flex-col flex-1 overflow-hidden'>
 				<Header />
-				<div className='flex-1 bg-white rounded-tl-lg overflow-scroll'>
+				<div className='flex-1 bg-white rounded-tl-lg overflow-y-scroll overflow-x-hidden'>
 					<Outlet />
 				</div>
 			</div>
