@@ -6,11 +6,13 @@ import { type Video } from '../../api/type';
 const VideoItem = ({ video }: { video: Video; }) => {
 	return (
 		<div className='flex flex-col rounded-lg shadow-lg overflow-hidden cursor-pointer'>
-			<div className='relative w-full pb-[75%]'>
+			<div className='relative w-full pb-[56%]'>
 				<img className='w-full h-full absolute left-0 top-0' src={video.pic} alt='' referrerPolicy='no-referrer' crossOrigin='anonymous' />
 			</div>
 			<div className='flex p-2'>
-				<span className=' font-bold line-clamp-2 flex-1'>{video.title}</span>
+				<h3 className='line-clamp-2 flex-1 m-0' title={video.title}>
+					{video.title}
+				</h3>
 			</div>
 		</div>
 	);

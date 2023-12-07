@@ -13,3 +13,12 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 }
+
+p[title^='\300c'],
+p[title^='\300e'],
+p[title^='\3010'],
+h3[title^='\300c'],
+h3[title^='\300e'],
+h3[title^='\3010'] {
+	text-indent: -0.6em;
+}
