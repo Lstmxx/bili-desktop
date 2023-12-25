@@ -4,7 +4,6 @@ import useVideoList from '../../hooks/use-video-list';
 import { type Video } from '../../api/type';
 import Layout from '../../components/Layout';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { Button } from '@mui/material';
 
 const VideoItem = ({ video }: { video: Video; }) => {
 	return (
@@ -21,24 +20,42 @@ const VideoItem = ({ video }: { video: Video; }) => {
 	);
 };
 
-const QuickAction = () => {
+const QuickAction = ({ onReload }: { onReload: () => void; }) => {
+	const handleReload = () => {
+		onReload();
+	};
 	return (
-		<div className='tw-flex flex-col'>
-			<Button className='p-4 bg-white' variant='contained'>
+		<div className='flex flex-col items-start'>
+			<div>hhh</div>
+			<div className='flex p-2 bg-white shadow-md rounded-lg cursor-pointer' onClick={handleReload}>
 				<ReplayIcon className='text-black' />
-			</Button>
+			</div>
 		</div>
 	);
 };
 
 export default function Recommend () {
 	const { userInfo } = useUserStore();
-	const { videos, handleGetRecommendVideos } = useVideoList({ pageSize: 30 });
+	const { videos, handleGetRecommendVideos, clearVideoIdMap } = useVideoList({ pageSize: 30 });
+
+	const handleAtBottom = () => {
+		console.log('life', 'bottom');
+		handleGetRecommendVideos('add');
+	};
+
 	useEffect(() => {
-		handleGetRecommendVideos();
+		console.log('life', 'effect');
+		const timeoutId = setTimeout(async () => {
+			await handleGetRecommendVideos();
+		});
+		return () => {
+			console.log('life', 'clear');
+			clearTimeout(timeoutId);
+			clearVideoIdMap();
+		};
 	}, [userInfo]);
 	return (
-		<Layout>
+		<Layout onScrollBottom={handleAtBottom}>
 			{{
 				content: (
 					<>
@@ -47,7 +64,7 @@ export default function Recommend () {
 						))}
 					</>
 				),
-				quick: <QuickAction />
+				quick: <QuickAction onReload={handleGetRecommendVideos} />
 			}}
 		</Layout>
 	);
