@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import useVideoList from '../../hooks/use-video-list';
 import { type Video } from '../../api/type';
 import Layout from '../../components/Layout';
-import ReplayIcon from '@mui/icons-material/Replay';
+import { Replay as ReplayIcon, ArrowUpward as ArrowUpwardIcon } from '@mui/icons-material';
+import { useScrollStore } from '@/layout/store/scroll';
 
 const VideoItem = ({ video }: { video: Video; }) => {
 	return (
@@ -21,14 +22,22 @@ const VideoItem = ({ video }: { video: Video; }) => {
 };
 
 const QuickAction = ({ onReload }: { onReload: () => void; }) => {
+	const { scrollTop, isNotAtTop } = useScrollStore();
 	const handleReload = () => {
 		onReload();
 	};
+	const handleScrollTop = () => {
+		scrollTop();
+	};
 	return (
-		<div className='flex flex-col items-start'>
-			<div>hhh</div>
+		<div className='flex flex-col items-start gap-4'>
+			{isNotAtTop && (
+				<div className='flex p-2 bg-white shadow-md rounded-lg cursor-pointer' onClick={handleScrollTop}>
+					<ArrowUpwardIcon className='text-3xl text-black' />
+				</div>
+			)}
 			<div className='flex p-2 bg-white shadow-md rounded-lg cursor-pointer' onClick={handleReload}>
-				<ReplayIcon className='text-black' />
+				<ReplayIcon className='text-3xl text-black' />
 			</div>
 		</div>
 	);
@@ -36,6 +45,7 @@ const QuickAction = ({ onReload }: { onReload: () => void; }) => {
 
 export default function Recommend () {
 	const { userInfo } = useUserStore();
+	const { subscribeAtBottom, removeAtBottomCb } = useScrollStore();
 	const { videos, handleGetRecommendVideos, clearVideoIdMap } = useVideoList({ pageSize: 30 });
 
 	const handleAtBottom = () => {
@@ -44,18 +54,27 @@ export default function Recommend () {
 	};
 
 	useEffect(() => {
+		console.log('userInfo', userInfo);
 		console.log('life', 'effect');
-		const timeoutId = setTimeout(async () => {
-			await handleGetRecommendVideos();
+		const timeoutId = setTimeout(() => {
+			handleGetRecommendVideos();
 		});
+
 		return () => {
 			console.log('life', 'clear');
 			clearTimeout(timeoutId);
 			clearVideoIdMap();
 		};
 	}, [userInfo]);
+
+	useEffect(() => {
+		subscribeAtBottom('recommend', handleAtBottom);
+		return () => {
+			removeAtBottomCb('recommend');
+		};
+	}, []);
 	return (
-		<Layout onScrollBottom={handleAtBottom}>
+		<Layout>
 			{{
 				content: (
 					<>

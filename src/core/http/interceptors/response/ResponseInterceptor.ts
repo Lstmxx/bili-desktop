@@ -4,7 +4,7 @@ import { enqueueSnackbar } from 'notistack';
 
 export class ResponseInterceptor {
 	async fulfilled (response: Response<any>) {
-		console.log('response', response);
+		console.log(`${response.url} response`, response);
 		if (!response.ok) {
 			return await Promise.reject(new Error('未知错误'));
 		}
