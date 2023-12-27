@@ -8,7 +8,10 @@ module.exports = {
 				primary: '#fb729a',
 				blue: '#00AEEC',
 				border: '#f1f2f3',
-				info: "#999"
+				info: "#9499A0"
+			},
+			fontSize: {
+				'follow-icon-size': '12px'
 			},
 		},
 	},

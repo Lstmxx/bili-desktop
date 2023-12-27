@@ -1,3 +1,3 @@
 export default function Bangumi () {
-	return <div>bangumi</div>;
+  return <div>bangumi</div>;
 }

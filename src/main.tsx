@@ -9,12 +9,12 @@ import Loading from './components/loading/Loading';
 const rootEl = document.getElementById('root') as HTMLElement;
 
 ReactDOM.createRoot(rootEl).render(
-	<React.StrictMode>
-		<ThemeProvider rootElement={rootEl}>
-			<SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'top' }}>
-				<Loading />
-				<App />
-			</SnackbarProvider>
-		</ThemeProvider>
-	</React.StrictMode>
+  <React.StrictMode>
+    <ThemeProvider rootElement={rootEl}>
+      <SnackbarProvider maxSnack={1} anchorOrigin={{ horizontal: 'center', vertical: 'top' }}>
+        <Loading />
+        <App />
+      </SnackbarProvider>
+    </ThemeProvider>
+  </React.StrictMode>
 );

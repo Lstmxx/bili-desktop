@@ -24,7 +24,8 @@
 		"paths": {
 			"@/*": ["src/*"],
 			"@root/*": ["./*"]
-		}
+		},
+		"types": ["vite-plugin-svgr/client"]
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["node_modules", "dist"],
