@@ -2,24 +2,23 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Aside from './Aside/Aside';
 import { useRef, type UIEvent, useEffect } from 'react';
-import { throttle } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { useScrollStore } from '@/layout/store/scroll';
 
 export default function Layout () {
   const contentRef = useRef<HTMLDivElement>(null);
+  const isAtBottom = useRef(false);
   const { setScrollRef, publisherAtBottom, setIsNotAtTop } = useScrollStore();
-  const handleScroll = throttle(
-    (event: UIEvent<HTMLDivElement>) => {
-      const { scrollTop, clientHeight, scrollHeight } = event.currentTarget || event.target;
-      // 到底部
-      if (scrollTop + clientHeight >= scrollHeight - 10) {
-        publisherAtBottom();
-      }
-      setIsNotAtTop(scrollTop > 0);
-    },
-    300,
-    { leading: true }
-  );
+  const handleScroll = debounce((event: UIEvent<HTMLDivElement>) => {
+    const { scrollTop, clientHeight, scrollHeight } = event.currentTarget || event.target;
+    // 到底部
+    console.log(scrollTop, clientHeight, scrollHeight);
+    if (!isAtBottom.current && scrollTop + clientHeight >= scrollHeight - 5) {
+      isAtBottom.current = true;
+      publisherAtBottom().then(() => (isAtBottom.current = false));
+    }
+    setIsNotAtTop(scrollTop > 0);
+  }, 300);
 
   useEffect(() => {
     if (contentRef.current) {

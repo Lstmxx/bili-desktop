@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
 interface Bottom {
-  publisherAtBottom: () => void;
+  publisherAtBottom: () => Promise<any>;
   removeAtBottomCb: (name: string) => void;
-  atBottomCbList: Array<{ name: string; cb: () => void; }>;
-  subscribeAtBottom: (name: string, cb: () => void) => void;
+  atBottomCbList: Array<{ name: string; cb: (() => Promise<any>) | (() => void); }>;
+  subscribeAtBottom: (name: string, cb: (() => Promise<any>) | (() => void)) => void;
 }
 
 interface ScrollStore extends Bottom {
@@ -33,11 +33,23 @@ export const useScrollStore = create<ScrollStore>()((set, get) => ({
     }
     set(() => ({ atBottomCbList }));
   },
-  publisherAtBottom: () => {
+  publisherAtBottom: async () => {
     const { atBottomCbList } = get();
+    console.log('publish', atBottomCbList);
+    const promiseList: Array<Promise<any>> = [];
     atBottomCbList.forEach((item) => {
-      item.cb();
+      const promise = new Promise((resolve) => {
+        const res = item.cb();
+        if (res?.then) {
+          res.then(resolve); // 等待异步操作完成
+          resolve('');
+        } else {
+          resolve('');
+        }
+      });
+      promiseList.push(promise);
     });
+    await Promise.all(promiseList);
   },
   subscribeAtBottom: (name, cb) => {
     const { atBottomCbList } = get();
@@ -45,6 +57,8 @@ export const useScrollStore = create<ScrollStore>()((set, get) => ({
     if (index === -1) {
       set(() => ({ atBottomCbList: [...atBottomCbList, { name, cb }] }));
     }
+
+    console.log('subscribe', atBottomCbList);
   },
   scrollTop: () => {
     const { scrollRef } = get();
