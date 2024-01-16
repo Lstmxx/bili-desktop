@@ -1,6 +1,12 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod mpd;
+
+mod web;
+
+use std::thread;
+
 use tauri::Manager;
 
 use cocoa::appkit::{NSWindow, NSWindowStyleMask};
@@ -51,9 +57,17 @@ fn main() {
         .setup(|app| {
             let win = app.get_window("main").unwrap();
             win.set_transparent_titlebar(true);
+
+            let handle = app.handle();
+            let boxed_handle = Box::new(handle);
+
+            thread::spawn(move || {
+                let _ = web::server::start_server(*boxed_handle).unwrap();
+            });
+
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, mpd::save_mpd])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

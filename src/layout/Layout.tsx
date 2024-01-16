@@ -33,7 +33,8 @@ export default function Layout () {
         <div
           ref={contentRef}
           className='flex-1 bg-white rounded-tl-lg overflow-y-auto overflow-x-hidden'
-          onScroll={handleScroll}>
+          onScroll={handleScroll}
+        >
           <Outlet />
         </div>
       </div>

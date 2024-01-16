@@ -5,6 +5,8 @@ import Layout from '../../components/Layout';
 import { Replay as ReplayIcon, ArrowUpward as ArrowUpwardIcon } from '@mui/icons-material';
 import { useScrollStore } from '@/layout/store/scroll';
 import VideoItem from '../../components/VideoItem';
+import { type Video } from '../../api/type';
+import { showVideoPreview, hiddenVideoPreview } from '../../utils/video-preview';
 
 const QuickAction = ({ onReload }: { onReload: () => void; }) => {
   const { scrollTop, isNotAtTop } = useScrollStore();
@@ -38,6 +40,14 @@ export default function Recommend () {
     await handleGetRecommendVideos('add');
   };
 
+  const handleShowPreview = (targetRef: HTMLDivElement, video: Video) => {
+    showVideoPreview({ target: targetRef, video });
+  };
+
+  const handleHiddenPreview = () => {
+    hiddenVideoPreview();
+  };
+
   useEffect(() => {
     console.log('userInfo', userInfo);
     console.log('life', 'effect');
@@ -64,7 +74,12 @@ export default function Recommend () {
         content: (
           <>
             {videos.map((video) => (
-              <VideoItem key={video.id} video={video} />
+              <VideoItem
+                key={video.id}
+                video={video}
+                onMouseEnter={handleShowPreview}
+                onMouseLeave={handleHiddenPreview}
+              />
             ))}
           </>
         ),

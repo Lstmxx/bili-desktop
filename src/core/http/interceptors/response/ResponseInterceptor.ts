@@ -4,12 +4,15 @@ import { enqueueSnackbar } from 'notistack';
 
 export class ResponseInterceptor {
   async fulfilled (response: Response<any>) {
-    console.log(`${response.url} response`, response);
+    console.log('-----------');
+    console.log(`url ${response.url}`);
+    console.log('response', response);
+    console.log('-----------');
     if (!response.ok) {
       return await Promise.reject(new Error('未知错误'));
     }
     const data = response.data as IResponse<any>;
-    if (data.code !== 0) {
+    if (response.headers['content-type'].includes('json') && data.code !== 0) {
       return await Promise.reject(new Error(data.message));
     }
     return response;

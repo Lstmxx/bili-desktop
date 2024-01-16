@@ -2,8 +2,9 @@ import UpSvg from '@/assets/icon/up.svg?react';
 import PlaysSvg from '@/assets/icon/plays.svg?react';
 import CommentSvg from '@/assets/icon/comment.svg?react';
 import { type Stat, type Video } from '../api/type';
-import { useMemo } from 'react';
+import { type MouseEventHandler, useMemo, useCallback } from 'react';
 import { padZero, formatOverTenThousand } from '@/core/utils/format';
+import { debounce } from 'lodash-es';
 
 const VideoStat = ({ stat, duration }: { stat: Stat; duration: number; }) => {
   const durationText = useMemo(() => {
@@ -19,7 +20,8 @@ const VideoStat = ({ stat, duration }: { stat: Stat; duration: number; }) => {
           justify-between text-white bg-gradient-to-t from-black p-2
           leading-none transition delay-150 duration-300 ease-in-out group-hover:opacity-0
           font-bold items-center
-        '>
+        '
+    >
       <div className='flex items-center'>
         <PlaysSvg width={18} height={18} />
         <span className='ml-1'>{formatOverTenThousand(stat.view)}</span>
@@ -31,10 +33,47 @@ const VideoStat = ({ stat, duration }: { stat: Stat; duration: number; }) => {
   );
 };
 
-const VideoItem = ({ video }: { video: Video; }) => {
+const VideoItem = ({
+  video,
+  onMouseEnter,
+  onMouseLeave
+}: {
+  video: Video;
+  onMouseEnter?: (targetRef: HTMLDivElement, video: Video) => void;
+  onMouseLeave?: () => void;
+}) => {
+  const handleShowPreview: MouseEventHandler<HTMLDivElement> = useCallback(
+    debounce(
+      (event) => {
+        if (onMouseEnter) {
+          onMouseEnter(event.currentTarget as HTMLDivElement, video);
+        }
+      },
+      1000,
+      { leading: true }
+    ),
+    []
+  );
+
+  const handleHiddenPreview: MouseEventHandler<HTMLDivElement> = useCallback(
+    debounce(
+      () => {
+        if (onMouseLeave) {
+          onMouseLeave();
+        }
+      },
+      1000,
+      { leading: true }
+    ),
+    []
+  );
   return (
     <div className='flex flex-col cursor-pointer gap-2'>
-      <div className='relative w-full pb-[56%] transition delay-150 duration-300 ease-in-out hover:scale-105 group'>
+      <div
+        className='relative w-full pb-[56%] transition delay-150 duration-300 ease-in-out hover:scale-105 group'
+        onMouseEnter={handleShowPreview}
+        onMouseLeave={handleHiddenPreview}
+      >
         <img
           className='w-full h-full absolute left-0 top-0 rounded-lg object-cover'
           src={video.pic}

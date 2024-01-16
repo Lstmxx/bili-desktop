@@ -38,7 +38,8 @@ export default function PasswordLogin () {
       <div
         className='flex flex-col border
         border-border border-solid rounded-md divide-border divide-solid divide-y divide-x-0
-      '>
+      '
+      >
         <Input label='账号' placeholder='请输入账号' fullWidth register={register('username', { required: true })} />
         <Input
           label='密码'
@@ -55,7 +56,8 @@ export default function PasswordLogin () {
           color='primary'
           className='flex-1'
           disabled={!isDirty || !isValid}
-          onClick={handleSubmit(onSubmit)}>
+          onClick={handleSubmit(onSubmit)}
+        >
           登录
         </Button>
       </div>

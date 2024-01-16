@@ -35,6 +35,7 @@ export const useTokenStore = create<TokenStore>()(
           const keys = ['SESSDATA', 'bili_jct', 'DedeUserID'];
           const params = qs.parse(url.split('?')[1]);
           const [SESSDATA, bili_jct, DedeUserID] = keys.map((key) => params[key] ?? '') as string[];
+          console.log('SESSDATA', SESSDATA);
           let buvid3 = '';
           try {
             const { data } = await getSpi();
